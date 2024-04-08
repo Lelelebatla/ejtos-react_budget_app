@@ -7,6 +7,15 @@ const AllocationForm = (props) => {
     const [name, setName] = useState('');
     const [cost, setCost] = useState('');
     const [action, setAction] = useState('');
+    const [selectedCurrency, setSelectedCurrency] = useState('dollar');
+
+    const handleCostChange = (event) =>{
+        setCost(event.target.value);
+    };
+
+    const handleCurrencyChange = (event) => {
+        setSelectedCurrency(event.target.value);
+    };
 
     const submitEvent = () => {
 
@@ -38,6 +47,20 @@ const AllocationForm = (props) => {
             }
     };
 
+    const getCurrencyPrefix = () => {
+        switch (selectedCurrency){
+            case 'pound':
+                return '£';
+            case 'euro':
+                return '€';
+            case 'rupee':
+                return '╣';
+            case 'dollar':
+            default:
+                return '$';
+        }
+    };
+
     return (
         <div>
             <div className='row'>
@@ -65,14 +88,18 @@ const AllocationForm = (props) => {
                   </select>
 
                   <div className="input-group-prepend" style={{ marginLeft: '2rem' }}>
-                        <label className="input-group-text" htmlFor="currencySelect">Currency</label>
+                        
                     </div>
-                    <select className="custom-select" id="currencySelect" onChange={(event) => setSelectedCurrency(event.target.value)}>
+                    <select className="custom-select" id="currencySelect" onChange={handleCurrencyChange}>
                         <option value="dollar">Dollar</option>
                         <option value="pound">Pound</option>
                         <option value="euro">Euro</option>
                         <option value="rupee">Rupee</option>
                     </select>
+
+                    <div className="input-group-prepend">
+                        <span className="input-group-text">{getCurrencyPrefix()}</span>
+                    </div>
 
                     <input
                         required='required'
@@ -80,7 +107,7 @@ const AllocationForm = (props) => {
                         id='cost'
                         value={cost}
                         style={{ marginLeft: '2rem' , size: 10}}
-                        onChange={(event) => setCost(event.target.value)}>
+                        onChange={handleCostChange}>
                         </input>
 
                     <button className="btn btn-primary" onClick={submitEvent} style={{ marginLeft: '2rem' }}>
@@ -88,7 +115,6 @@ const AllocationForm = (props) => {
                     </button>
                 </div>
                 </div>
-
         </div>
     );
 };
